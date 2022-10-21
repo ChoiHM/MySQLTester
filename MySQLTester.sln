@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32825.248
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySQLTester", "MySQLTester\MySQLTester.csproj", "{E5FBD85E-88A9-4894-ADBE-F3F4C8F309F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library", "CommonLibrary\Library.csproj", "{D86C17E6-B7DE-4924-9CC8-3BB99EB289A7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E5FBD85E-88A9-4894-ADBE-F3F4C8F309F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5FBD85E-88A9-4894-ADBE-F3F4C8F309F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5FBD85E-88A9-4894-ADBE-F3F4C8F309F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5FBD85E-88A9-4894-ADBE-F3F4C8F309F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D86C17E6-B7DE-4924-9CC8-3BB99EB289A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D86C17E6-B7DE-4924-9CC8-3BB99EB289A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D86C17E6-B7DE-4924-9CC8-3BB99EB289A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D86C17E6-B7DE-4924-9CC8-3BB99EB289A7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CA2B4BE0-2026-4F5E-BF8C-330B7809A2FC}
+	EndGlobalSection
+EndGlobal
