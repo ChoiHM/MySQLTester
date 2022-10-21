@@ -32,6 +32,10 @@ namespace MySQLTester
             InitializeComponent();
         }
 
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+            dgv.DoubleBuffered(true);
+        }
         private void txt_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -82,15 +86,25 @@ namespace MySQLTester
                 }
             });
 
-            var retTask = Task.WaitAny(openTask, Task.Delay(1000 * 1));
-            if (retTask != 0 && isCompleted == false)
+            if (isCompleted)
             {
-                listDt.Remove(dtNow);
-                MsgBox.ShowWarning("접속 TimeOut!");
                 this.InvokeIfRequired(() =>
                 {
                     pnTop.Enabled = true;
                 });
+                return;
+            }
+
+            var retTask = Task.WaitAny(openTask, Task.Delay(1000 * 1));
+            this.InvokeIfRequired(() =>
+            {
+                pnTop.Enabled = true;
+            });
+
+            if (retTask != 0 && isCompleted == false)
+            {
+                listDt.Remove(dtNow);
+                MsgBox.ShowWarning("접속 TimeOut!");
             }
         }
         private void btnRun_Click(object sender, EventArgs e)
@@ -103,38 +117,63 @@ namespace MySQLTester
         private void RunQuery()
         {
             DateTime dtNow = DateTime.Now;
-            try
-            {
-                if (dt != null)
-                {
-                    dt.Clear();
-                    dt = null;
-                }
-                dt = GetDataTable(txtQuery.Text);
-                dgv.DataSource = null;
-                dgv.DataSource = dt;
+            btnRun.Enabled = false;
+            txtQuery.Enabled = false;
 
-                lbElapsedTime.Text = $"{DateTime.Now.Subtract(dtNow).TotalSeconds.ToString("#0.000")} Sec";
-                lbTotalRows.Text = "총 " + string.Format("{0:n0}", dt.Rows.Count) + " 행";
-            }
-            catch (Exception ex)
+            Task.Factory.StartNew(() =>
             {
-                lbElapsedTime.Text = "측정 오류";
-                MsgBox.ShowError("오류!\n" + ex.Message);
-            }
-            finally
-            {
-                this.InvokeIfRequired(() =>
+                try
                 {
-                    btnRun.Enabled = true;
-                });
-            }
+                    if (dt != null)
+                    {
+                        dt.Clear();
+                        dt = null;
+                    }
+                    dt = GetDataTable(txtQuery.Text);
+                    if (recentException != null)
+                    {
+                        MsgBox.ShowError(recentException.Message);
+                        return;
+                    }
+                    if (dt == null)
+                    {
+                        return;
+                    }
+
+                    this.InvokeIfRequired(() =>
+                    {
+                        dgv.DataSource = null;
+                        dgv.DataSource = dt;
+
+                        lbElapsedTime.Text = $"{DateTime.Now.Subtract(dtNow).TotalSeconds.ToString("#0.000")} Sec";
+                        lbTotalRows.Text = "총 " + string.Format("{0:n0}", dt.Rows.Count) + " 행";
+                    });
+                }
+                catch (Exception ex)
+                {
+                    this.InvokeIfRequired(() =>
+                    {
+                        lbElapsedTime.Text = "측정 오류";
+                    });
+                    MsgBox.ShowError("오류!\n" + ex.Message);
+                }
+                finally
+                {
+                    this.InvokeIfRequired(() =>
+                    {
+                        btnRun.Enabled = true;
+                        txtQuery.Enabled = true;
+                    });
+                }
+            });
         }
 
+        Exception recentException = null;
         public DataTable GetDataTable(string strQuery, params SqlParameter[] SqlParam)
         {
             try
             {
+                recentException = null;
                 var table = new DataTable();
 
                 using (MySqlConnection conn = new MySqlConnection(ConnStr))
@@ -156,8 +195,9 @@ namespace MySQLTester
                 }
                 return table;
             }
-            catch
+            catch (Exception ex)
             {
+                recentException = ex;
                 return null;
             }
         }
@@ -168,6 +208,11 @@ namespace MySQLTester
             {
                 RunQuery();
             }
+        }
+
+        private void dgv_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            e.Cancel = true;
         }
     }
 }

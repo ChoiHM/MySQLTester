@@ -49,8 +49,8 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.lbElapsedTime = new System.Windows.Forms.ToolStripStatusLabel();
-            this.lbTotalRows = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lbTotalRows = new System.Windows.Forms.ToolStripStatusLabel();
             this.pnTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
             this.panel1.SuspendLayout();
@@ -203,7 +203,7 @@
             this.dgv.ShowRowErrors = false;
             this.dgv.Size = new System.Drawing.Size(733, 253);
             this.dgv.TabIndex = 2;
-            this.dgv.VirtualMode = true;
+            this.dgv.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgv_DataError);
             // 
             // panel1
             // 
@@ -263,19 +263,19 @@
             this.lbElapsedTime.Size = new System.Drawing.Size(41, 17);
             this.lbElapsedTime.Text = "대기중";
             // 
-            // lbTotalRows
-            // 
-            this.lbTotalRows.Font = new System.Drawing.Font("굴림", 9F);
-            this.lbTotalRows.Name = "lbTotalRows";
-            this.lbTotalRows.Size = new System.Drawing.Size(11, 17);
-            this.lbTotalRows.Text = "-";
-            // 
             // toolStripStatusLabel3
             // 
             this.toolStripStatusLabel3.Margin = new System.Windows.Forms.Padding(5, 3, 5, 2);
             this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
             this.toolStripStatusLabel3.Size = new System.Drawing.Size(10, 17);
             this.toolStripStatusLabel3.Text = "|";
+            // 
+            // lbTotalRows
+            // 
+            this.lbTotalRows.Font = new System.Drawing.Font("굴림", 9F);
+            this.lbTotalRows.Name = "lbTotalRows";
+            this.lbTotalRows.Size = new System.Drawing.Size(11, 17);
+            this.lbTotalRows.Text = "-";
             // 
             // frmMain
             // 
@@ -291,6 +291,7 @@
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MySQL Tester - HMIPS CodeReaper";
+            this.Load += new System.EventHandler(this.frmMain_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyDown);
             this.pnTop.ResumeLayout(false);
             this.pnTop.PerformLayout();
